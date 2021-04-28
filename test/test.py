@@ -17,7 +17,8 @@ class ClickerTest(unittest.TestCase):
             for i in 100:
                 if clicker.improvement != clicker.dvorec:
                     clicker.improvement.quantity = i
-                    self.asserEqual(clicker.user.rps, clicker.improvement.base_cost * i)
+                    clicker.user.updateTotalrps(clicker.list_of_improvement)
+                    self.assertEqual(clicker.user.rps, clicker.improvement.base_cost * i)
                     to_start_position()
 
     def check_cost(self):
@@ -25,7 +26,7 @@ class ClickerTest(unittest.TestCase):
             for i in 100:
                 if clicker.improvement != clicker.dvorec:
                     clicker.improvement.quantity = i
-                    self.asserEqual(clicker.improvement.getTotalCost(), int(self.base_cost * self.increase_per_purchase**(i)))
+                    self.assertEqual(clicker.improvement.getTotalCost(), int(self.base_cost * self.increase_per_purchase**(i)))
                     to_start_position()
 
 class FastClickerTest(unittest.TestCase):
