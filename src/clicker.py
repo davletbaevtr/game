@@ -2,22 +2,22 @@ import pygame
 import time
 import dollar
 
-dollar_now = curr_price()
+dollar_now = dollar.curr_price()
 
 pygame.init()
 pygame.display.set_caption('Clicker game')
 
-background_img = pygame.image.load('resourses/sprites/background.png')
+background_img = pygame.image.load('sprites/background.png')
 
-putin_img = pygame.image.load('resourses/sprites/putin_img.png')
-polic_img = pygame.image.load('resourses/sprites/police.png')
-rosgv_img = pygame.image.load('resourses/sprites/rosgv.png')
-prist_img = pygame.image.load('resourses/sprites/prist.png')
-dvorec_img = pygame.image.load('resourses/sprites/dvorec.png')
-novichek_img = pygame.image.load('resourses/sprites/nov.png')
-menu_img = pygame.image.load('resourses/sprites/menu.png')
-end_img = pygame.image.load('resourses/sprites/end.png')
-win_img = pygame.image.load('resourses/sprites/win.png')
+putin_img = pygame.image.load('sprites/putin_img.png')
+polic_img = pygame.image.load('sprites/police.png')
+rosgv_img = pygame.image.load('sprites/rosgv.png')
+prist_img = pygame.image.load('sprites/prist.png')
+dvorec_img = pygame.image.load('sprites/dvorec.png')
+novichek_img = pygame.image.load('sprites/nov.png')
+menu_img = pygame.image.load('sprites/menu.png')
+end_img = pygame.image.load('sprites/end.png')
+win_img = pygame.image.load('sprites/win.png')
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -147,10 +147,9 @@ class win_buttons:
 class Player:
     def __init__(self):
         self.score = 0
-        self.click_multiplier = 1
         self.rps = 0
 
-    def updateTotalrps(self, list_of_improvenet):
+    def updateTotalrps(self, list_of_improvement):
         self.rps = 0
         for improvement in list_of_improvement:
             self.rps += improvement.rps * improvement.quantity
@@ -158,7 +157,6 @@ class Player:
 window_length = 1000
 window_height = 800
 window = pygame.display.set_mode((window_length, window_height))
-
 putin = MainPutin(500, 140)
 score_board = ScoreBoard(100, 0)
 user = Player()
@@ -239,9 +237,6 @@ def menu_draw():
 
     pygame.display.update()
 
-
-tmp_time = pygame.time.get_ticks()
-
 def end(is_win):
     end_font = pygame.font.SysFont('arial', 48)
     is_end = end_font.render('{}'.format('Thanks for playing'), True, GREEN)
@@ -259,6 +254,7 @@ def end(is_win):
 
     pygame.time.delay(1000)
 
+tmp_time = pygame.time.get_ticks()
 
 win = False
 def run():
@@ -306,5 +302,8 @@ def run():
 
         draw()
 
-run()
-end(win)
+if __name__ == '__main__':
+    run()
+    end(win)
+else:
+    pygame.display.set_caption('WAIT, TESTING')
