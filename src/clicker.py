@@ -11,6 +11,8 @@ BLACK = (0, 0, 0)
 GREEN = (0, 255, 0)
 DARK_BLUE = (51, 90, 114)
 
+common_path = 'resourses/sprites/'
+
 dollar_now = dollar.curr_price()
 
 pygame.init()
@@ -18,17 +20,17 @@ pygame.display.set_caption('Clicker game')
 window = pygame.display.set_mode((window_length, window_height))
 tmp_time = pygame.time.get_ticks()
 
-background_img = pygame.image.load('resourses/sprites/background.png')
+background_img = pygame.image.load(common_path + '/background.png')
 
-putin_img = pygame.image.load('resourses/sprites/putin_img.png')
-polic_img = pygame.image.load('resourses/sprites/police.png')
-rosgv_img = pygame.image.load('resourses/sprites/rosgv.png')
-prist_img = pygame.image.load('resourses/sprites/prist.png')
-dvorec_img = pygame.image.load('resourses/sprites/dvorec.png')
-novichek_img = pygame.image.load('resourses/sprites/nov.png')
-menu_img = pygame.image.load('resourses/sprites/menu.png')
-end_img = pygame.image.load('resourses/sprites/end.png')
-win_img = pygame.image.load('resourses/sprites/win.png')
+putin_img = pygame.image.load(common_path + 'putin_img.png')
+polic_img = pygame.image.load(common_path + 'police.png')
+rosgv_img = pygame.image.load(common_path + 'rosgv.png')
+prist_img = pygame.image.load(common_path + 'prist.png')
+dvorec_img = pygame.image.load(common_path + 'dvorec.png')
+novichek_img = pygame.image.load(common_path + 'nov.png')
+menu_img = pygame.image.load(common_path + 'menu.png')
+end_img = pygame.image.load(common_path + 'end.png')
+win_img = pygame.image.load(common_path + 'win.png')
 
 class MainPutin:
     def __init__(self, x, y):
@@ -59,7 +61,6 @@ class ScoreBoard():
 
     def draw(self):
         font = pygame.font.SysFont('arial', 24)
-        small_font = pygame.font.SysFont('arial', 24)
 
         SCORE = font.render('{} rubles'.format( int(user.score) ), True, BLACK)
         dollar_now_ = font.render('dollar now:{}r'.format( dollar_now ), True, BLACK)
