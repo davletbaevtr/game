@@ -2,10 +2,21 @@ import pygame
 import time
 import dollar
 
+window_length = 1000
+window_height = 800
+store_y = 75
+
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+GREEN = (0, 255, 0)
+DARK_BLUE = (51, 90, 114)
+
 dollar_now = dollar.curr_price()
 
 pygame.init()
 pygame.display.set_caption('Clicker game')
+window = pygame.display.set_mode((window_length, window_height))
+tmp_time = pygame.time.get_ticks()
 
 background_img = pygame.image.load('resourses/sprites/background.png')
 
@@ -18,11 +29,6 @@ novichek_img = pygame.image.load('resourses/sprites/nov.png')
 menu_img = pygame.image.load('resourses/sprites/menu.png')
 end_img = pygame.image.load('resourses/sprites/end.png')
 win_img = pygame.image.load('resourses/sprites/win.png')
-
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-GREEN = (0, 255, 0)
-DARK_BLUE = (51, 90, 114)
 
 class MainPutin:
     def __init__(self, x, y):
@@ -65,7 +71,7 @@ class ScoreBoard():
         window.blit(time_for_req_, time_for_req_.get_rect( center=( int(self.x + self.length/2),int(self.y + self.height/2 - 40) ) ))
         window.blit(rps, (rps.get_rect( center=( int(self.x + self.length/2),int(self.y + self.height/2 + 20) ) )))
 
-class improvement:
+class Improvement:
     def __init__(self, name, x, y, image, base_cost, increase_per_purchase, rps):
         self.name = name
         self.x = x
@@ -149,31 +155,10 @@ class Player:
         self.score = 0
         self.rps = 0
 
-    def updateTotalrps(self, list_of_improvement):
+    def updateTotalrps(self):
         self.rps = 0
-        for improvement in list_of_improvement:
-            self.rps += improvement.rps * improvement.quantity
-
-window_length = 1000
-window_height = 800
-window = pygame.display.set_mode((window_length, window_height))
-putin = MainPutin(500, 140)
-score_board = ScoreBoard(100, 0)
-user = Player()
-win_button = win_buttons(50, 100, prist_img, 1000000)
-
-store_y = 75
-polic = improvement('Полиция', 700, 10, polic_img, base_cost = 15, increase_per_purchase = 1.15, rps = 0.1)
-rosgv = improvement('Гвардия', 700, 10 + store_y, rosgv_img, base_cost = 100, increase_per_purchase = 1.15, rps = 1)
-novichek = improvement('Новичок', 700, 10 + store_y * 2, novichek_img, base_cost = 1100, increase_per_purchase = 1.15, rps = 8)
-dvorec = improvement('Дворец', 700, 10 + store_y * 3, dvorec_img, base_cost = dollar_now * 160, increase_per_purchase = 1.15, rps = 47)
-
-list_of_improvement = [polic, rosgv, novichek, dvorec]
-list_of_fbuttons = [pygame.K_DELETE, pygame.K_PRINTSCREEN, pygame.K_F1, pygame.K_F2, pygame.K_F3, pygame.K_F4, 
-                    pygame.K_F5, pygame.K_F6, pygame.K_F7, pygame.K_F8, pygame.K_F9, pygame.K_F10, pygame.K_F11, 
-                    pygame.K_F12, pygame.K_HOME, pygame.K_HELP, pygame.K_END, pygame.K_PAGEDOWN, pygame.K_PAGEUP, 
-                    pygame.K_NUMLOCK, pygame.K_CAPSLOCK, pygame.K_LSHIFT, pygame.K_RSHIFT, pygame.K_LCTRL, 
-                    pygame.K_RCTRL, pygame.K_LALT, pygame.K_RALT, pygame.K_TAB]
+        for Improvement in list_of_improvement:
+            self.rps += Improvement.rps * Improvement.quantity
 
 def format_number(n):
     if n >= 1000000000:
@@ -204,13 +189,13 @@ def draw():
         win_button.draw(solid = False)    
 
     now_all_rps = 0
-    for improvement in list_of_improvement:
-        if user.score >= improvement.getTotalCost():
-            improvement.draw(solid = True)
+    for Improvement in list_of_improvement:
+        if user.score >= Improvement.getTotalCost():
+            Improvement.draw(solid = True)
         else:
-            improvement.draw(solid = False)
+            Improvement.draw(solid = False)
 
-        now_all_rps += improvement.rps * improvement.quantity
+        now_all_rps += Improvement.rps * Improvement.quantity
 
     now_time = pygame.time.get_ticks()
     if now_time - tmp_time >= 1000:
@@ -254,7 +239,23 @@ def end(is_win):
 
     pygame.time.delay(1000)
 
-tmp_time = pygame.time.get_ticks()
+putin = MainPutin(500, 140)
+score_board = ScoreBoard(100, 0)
+user = Player()
+win_button = win_buttons(50, 100, prist_img, 1000000)
+
+polic = Improvement('Полиция', 700, 10, polic_img, base_cost = 15, increase_per_purchase = 1.15, rps = 0.1)
+rosgv = Improvement('Гвардия', 700, 10 + store_y, rosgv_img, base_cost = 100, increase_per_purchase = 1.15, rps = 1)
+novichek = Improvement('Новичок', 700, 10 + store_y * 2, novichek_img, base_cost = 1100, increase_per_purchase = 1.15, rps = 8)
+dvorec = Improvement('Дворец', 700, 10 + store_y * 3, dvorec_img, base_cost = dollar_now * 160, increase_per_purchase = 1.15, rps = 47)
+
+list_of_improvement = [polic, rosgv, novichek, dvorec]
+
+list_of_fbuttons = [pygame.K_DELETE, pygame.K_PRINTSCREEN, pygame.K_F1, pygame.K_F2, pygame.K_F3, pygame.K_F4, 
+                    pygame.K_F5, pygame.K_F6, pygame.K_F7, pygame.K_F8, pygame.K_F9, pygame.K_F10, pygame.K_F11, 
+                    pygame.K_F12, pygame.K_HOME, pygame.K_HELP, pygame.K_END, pygame.K_PAGEDOWN, pygame.K_PAGEUP, 
+                    pygame.K_NUMLOCK, pygame.K_CAPSLOCK, pygame.K_LSHIFT, pygame.K_RSHIFT, pygame.K_LCTRL, 
+                    pygame.K_RCTRL, pygame.K_LALT, pygame.K_RALT, pygame.K_TAB]
 
 win = False
 def run():
@@ -280,11 +281,11 @@ def run():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = event.pos
 
-                for improvement in list_of_improvement:
-                    if improvement.collidepoint(mouse_pos) and user.score >= improvement.getTotalCost():
-                        user.score -= improvement.getTotalCost()
-                        improvement.quantity += 1
-                        user.updateTotalrps(list_of_improvement)
+                for Improvement in list_of_improvement:
+                    if Improvement.collidepoint(mouse_pos) and user.score >= Improvement.getTotalCost():
+                        user.score -= Improvement.getTotalCost()
+                        Improvement.quantity += 1
+                        user.updateTotalrps()
 
                 if win_button.collidepoint(mouse_pos) and user.score >= win_button.getCost():
                     game = False
@@ -302,8 +303,3 @@ def run():
 
         draw()
 
-if __name__ == '__main__':
-    run()
-    end(win)
-else:
-    pygame.display.set_caption('WAIT, TESTING')
