@@ -11,7 +11,7 @@ BLACK = (0, 0, 0)
 GREEN = (0, 255, 0)
 DARK_BLUE = (51, 90, 114)
 
-common_path = 'resourses/sprites/'
+common_path = 'resources/sprites/'
 
 dollar_now = dollar.curr_price()
 
@@ -20,7 +20,7 @@ pygame.display.set_caption('Clicker game')
 window = pygame.display.set_mode((window_length, window_height))
 tmp_time = pygame.time.get_ticks()
 
-background_img = pygame.image.load(common_path + '/background.png')
+background_img = pygame.image.load(common_path + 'background.png')
 
 putin_img = pygame.image.load(common_path + 'putin_img.png')
 polic_img = pygame.image.load(common_path + 'police.png')
