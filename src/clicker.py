@@ -121,7 +121,7 @@ class Improvement:
         window.blit(rps, (950, self.y + self.height - 3))
         window.blit(now_rps, (self.x + 5, self.y + self.height))
 
-class win_buttons:
+class Win_buttons:
     def __init__(self, x, y, image, cost):
         self.x = x
         self.y = y
@@ -243,7 +243,7 @@ def end(is_win):
 putin = MainPutin(500, 140)
 score_board = ScoreBoard(100, 0)
 user = Player()
-win_button = win_buttons(50, 100, prist_img, 1000000)
+win_button = Win_buttons(50, 100, prist_img, 1000000)
 
 polic = Improvement('Полиция', 700, 10, polic_img, base_cost = 15, increase_per_purchase = 1.15, rps = 0.1)
 rosgv = Improvement('Гвардия', 700, 10 + store_y, rosgv_img, base_cost = 100, increase_per_purchase = 1.15, rps = 1)
