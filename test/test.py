@@ -12,13 +12,13 @@ def to_start_position():
 class ClickerTest(unittest.TestCase):
     def test_auto_clicks(self):
         clicker.pygame.display.set_caption('Testing, wait.')
-        clicker.user.updateTotalrps(clicker.list_of_improvement)
+        clicker.user.updateTotalrps()
         self.assertEqual(clicker.user.score, 0)
         for clicker.improvement in clicker.list_of_improvement:
             for i in range(100):
                 if clicker.improvement != clicker.dvorec:
                     clicker.improvement.quantity = i
-                    clicker.user.updateTotalrps(clicker.list_of_improvement)
+                    clicker.user.updateTotalrps()
                     self.assertEqual(clicker.user.rps, clicker.improvement.base_cost * i)
                     to_start_position()
 
