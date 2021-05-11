@@ -2,7 +2,6 @@ import unittest
 import clicker
 
 def to_start_position():
-    clicker.dollar_now = clicker.dollar.curr_price()
     clicker.time_for_req = 0 
     for clicker.improvement in clicker.list_of_improvement:
         clicker.improvement.quantity = 0
@@ -18,7 +17,8 @@ class ClickerTest(unittest.TestCase):
                 if clicker.improvement != clicker.dvorec:
                     clicker.improvement.quantity = i
                     clicker.user.updateTotalrps()
-                    self.assertEqual(clicker.user.rps, clicker.improvement.base_cost * i)
+                    rps_from_improvement = clicker.improvement.base_cost * i
+                    self.assertEqual(clicker.user.rps, rps_from_improvement)
                     to_start_position()
 
     def test_check_cost(self):
@@ -26,7 +26,8 @@ class ClickerTest(unittest.TestCase):
             for i in range(100):
                 if clicker.improvement != clicker.dvorec:
                     clicker.improvement.quantity = i
-                    self.assertEqual(clicker.improvement.getTotalCost(), int(clicker.improvement.base_cost * clicker.improvement.increase_per_purchase**(i)))
+                    cost_of_improvement = int(clicker.improvement.base_cost * clicker.improvement.increase_per_purchase**(i))
+                    self.assertEqual(clicker.improvement.getTotalCost(), cost_of_improvement)
                     to_start_position()
 
 if __name__ == '__main__':
