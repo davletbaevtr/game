@@ -1,5 +1,5 @@
 import unittest
-import clicker
+from src import clicker
 
 def to_start_position():
     clicker.time_for_req = 0 
