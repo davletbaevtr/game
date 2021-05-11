@@ -1,4 +1,7 @@
 import clicker
 
-clicker.run()
-clicker.end(clicker.win)
+def run():
+    game = clicker.Game()
+    game.game_loop()
+
+run()

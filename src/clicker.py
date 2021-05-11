@@ -1,36 +1,19 @@
-import pygame
 import time
 import dollar
+from constants import *
 
-window_length = 1000
-window_height = 800
-store_y = 75
-
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-GREEN = (0, 255, 0)
-DARK_BLUE = (51, 90, 114)
-
-common_path = 'resources/sprites/'
-
-dollar_now = dollar.curr_price()
-
-pygame.init()
-pygame.display.set_caption('Clicker game')
-window = pygame.display.set_mode((window_length, window_height))
-tmp_time = pygame.time.get_ticks()
-
-background_img = pygame.image.load(common_path + 'background.png')
-
-putin_img = pygame.image.load(common_path + 'putin_img.png')
-polic_img = pygame.image.load(common_path + 'police.png')
-rosgv_img = pygame.image.load(common_path + 'rosgv.png')
-prist_img = pygame.image.load(common_path + 'prist.png')
-dvorec_img = pygame.image.load(common_path + 'dvorec.png')
-novichek_img = pygame.image.load(common_path + 'nov.png')
-menu_img = pygame.image.load(common_path + 'menu.png')
-end_img = pygame.image.load(common_path + 'end.png')
-win_img = pygame.image.load(common_path + 'win.png')
+def format_number(n):
+    if n >= 1000000000:
+        if (n / 1000000000 )% 1 == 0:
+            n = '{:.0f} billion'.format(n / 1000000000)
+        else:
+            n = '{:.2f} billion'.format(n / 1000000000)
+    elif n >= 1000000:
+        if (n / 1000000) % 1 == 0:
+            n = '{:.0f} million'.format(n / 1000000) 
+        else:
+            n = '{:.2f} million'.format(n / 1000000)
+    return n
 
 class MainPutin:
     def __init__(self, x, y):
@@ -50,7 +33,7 @@ class MainPutin:
             window.blit(putin_img, putin_img.get_rect( center=( int(self.x + self.length/2),int(self.y + self.height/2) ) ))
 
     def is_collidepoint(self, mouse_pos):
-        return pygame.Rect(self.x, self.y, self.length, self.height).collidepoint(mouse_pos)
+            return pygame.Rect(self.x, self.y, self.length, self.height).collidepoint(mouse_pos)
 
 class ScoreBoard():
     def __init__(self, x, y):
@@ -64,7 +47,7 @@ class ScoreBoard():
 
         SCORE = font.render('{} rubles'.format( int(user.score) ), True, BLACK)
         dollar_now_ = font.render('dollar now:{}r'.format( dollar_now ), True, BLACK)
-        time_for_req_ = font.render('time for update:{}min'.format( int((300 - time_for_req) / 60) ), True, BLACK)
+        time_for_req_ = font.render('time for update:{}min'.format( int((300 - time_for_req) / 60 + 1) ), True, BLACK)
         rps = font.render('per second: {:.1f}'.format(user.rps), True, BLACK)
 
         window.blit(SCORE, (SCORE.get_rect( center=( int(self.x + self.length/2),int(self.y + self.height/2) ) )))
@@ -161,146 +144,144 @@ class Player:
         for Improvement in list_of_improvement:
             self.rps += Improvement.rps * Improvement.quantity
 
-def format_number(n):
-    if n >= 1000000000:
-        if (n / 1000000000 )% 1 == 0:
-            n = '{:.0f} billion'.format(n / 1000000000)
+class Game():
+    def __init__(self):
+        global dollar_now
+        pygame.display.set_caption('Clicker game')
+
+        self.win = False
+        self.menu = True
+        self.game = True
+
+        dollar_now = dollar.curr_price()
+        self.tmp_time = pygame.time.get_ticks()
+
+    def draw(self):
+        window.blit(background_img, (0, 0))
+
+        putin.draw()
+        score_board.draw()
+
+        if user.score >= win_button.getCost():
+            win_button.draw(solid = True)
         else:
-            n = '{:.2f} billion'.format(n / 1000000000)
-    elif n >= 1000000:
-        if (n / 1000000) % 1 == 0:
-            n = '{:.0f} million'.format(n / 1000000) 
-        else:
-            n = '{:.2f} million'.format(n / 1000000)
-    return n
+            win_button.draw(solid = False)    
 
-time_for_req = 0 
+        for Improvement in list_of_improvement:
+            if user.score >= Improvement.getTotalCost():
+                Improvement.draw(solid = True)
+            else:
+                Improvement.draw(solid = False)
 
-def draw():
-    global tmp_time
-    global time_for_req
-    window.blit(background_img, (0, 0))
-
-    putin.draw()
-    score_board.draw()
-
-    if user.score >= win_button.getCost():
-        win_button.draw(solid = True)
-    else:
-        win_button.draw(solid = False)    
-
-    now_all_rps = 0
-    for Improvement in list_of_improvement:
-        if user.score >= Improvement.getTotalCost():
-            Improvement.draw(solid = True)
-        else:
-            Improvement.draw(solid = False)
-
-        now_all_rps += Improvement.rps * Improvement.quantity
-
-    now_time = pygame.time.get_ticks()
-    if now_time - tmp_time >= 1000:
-            user.score += now_all_rps
-            tmp_time = now_time
-            time_for_req += 1
-            if time_for_req >= 300:
-                dollar_now = curr_price()
-                time_for_req = 0
-    pygame.display.update()
-
-def menu_draw():
-    window.blit(menu_img, (0, 0))
-
-    menu_font = pygame.font.SysFont('arial', 48)
-    charac_font = pygame.font.SysFont('arial', 24)
-    charac1 = charac_font.render('{}'.format('All characters appearing in this work are fictious.'), True, BLACK)
-    charac2 = charac_font.render('{}'.format('Any resemblance to real persons, living or dead, is purely coincidental.'), True, BLACK)
-    menu = menu_font.render('{}'.format('Press any button to start!'), True, BLACK)
-
-    window.blit(charac1, (250, 560))
-    window.blit(charac2, (120, 585))
-    window.blit(menu, (240, 335))
-
-    pygame.display.update()
-
-def end(is_win):
-    end_font = pygame.font.SysFont('arial', 48)
-    is_end = end_font.render('{}'.format('Thanks for playing'), True, GREEN)
-    contact = end_font.render('{}'.format('@noname_td'), True, GREEN)
-
-    if is_win:
-        window.blit(win_img, (0, 0))
         pygame.display.update()
+
+    def menu_draw():
+        window.blit(menu_img, (0, 0))
+
+        menu_font = pygame.font.SysFont('arial', 48)
+        charac_font = pygame.font.SysFont('arial', 24)
+        charac1 = charac_font.render('{}'.format('All characters appearing in this work are fictious.'), True, BLACK)
+        charac2 = charac_font.render('{}'.format('Any resemblance to real persons, living or dead, is purely coincidental.'), True, BLACK)
+        menu = menu_font.render('{}'.format('Press any button to start!'), True, BLACK)
+
+        window.blit(charac1, (250, 560))
+        window.blit(charac2, (120, 585))
+        window.blit(menu, (240, 335))
+
+        pygame.display.update()
+
+    def update_score(self):
+        global dollar_now
+        global time_for_req
+        now_time = pygame.time.get_ticks()
+        if now_time - self.tmp_time >= 1000:
+                user.score += user.rps
+                self.tmp_time = now_time
+                time_for_req += 1
+                if time_for_req >= 300:
+                    dollar_now = dollar.curr_price()
+                    dvorec.base_cost = dollar_now * 160
+                    time_for_req = 0
+
+    def end(is_win):
+        end_font = pygame.font.SysFont('arial', 48)
+        is_end = end_font.render('{}'.format('Thanks for playing'), True, GREEN)
+        contact = end_font.render('{}'.format('@noname_td'), True, GREEN)
+
+        if is_win:
+            window.blit(win_img, (0, 0))
+            pygame.display.update()
+            pygame.time.delay(1000)
+
+        window.blit(end_img, (0, 0))
+        window.blit(is_end, (100, 280))
+        window.blit(contact, (100, 330))
+        pygame.display.update()
+
         pygame.time.delay(1000)
 
-    window.blit(end_img, (0, 0))
-    window.blit(is_end, (100, 280))
-    window.blit(contact, (100, 330))
-    pygame.display.update()
+    def check_ivents(self):
+        if self.menu == True:
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key not in list_of_fbuttons:
+                        self.menu = False
+                        if event.key == pygame.K_ESCAPE:
+                            self.game = False
 
-    pygame.time.delay(1000)
+                if event.type == pygame.QUIT:
+                    self.menu = False
+                    self.game = False
+        else:
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    mouse_pos = event.pos
+
+                    for Improvement in list_of_improvement:
+                        if Improvement.collidepoint(mouse_pos) and user.score >= Improvement.getTotalCost():
+                            user.score -= Improvement.getTotalCost()
+                            Improvement.quantity += 1
+                            user.updateTotalrps()
+
+                    if win_button.collidepoint(mouse_pos) and user.score >= win_button.getCost():
+                        self.game = False
+                        self.win = True
+        
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        self.game = False
+                    elif event.key == pygame.K_SPACE:
+                        user.score += 1
+                        putin.animation_state = 1
+
+                if event.type == pygame.QUIT:
+                    self.game = False
+
+    def game_loop(self):
+
+        Game.menu_draw()
+        while self.menu == True:
+            self.check_ivents()
+            pygame.time.delay(10)
+
+        while self.game == True:
+            self.update_score()
+            self.check_ivents()
+            self.draw()
+
+        Game.end(self.win)
+
+dollar_now = dollar.curr_price()
 
 putin = MainPutin(500, 140)
 score_board = ScoreBoard(100, 0)
 user = Player()
 win_button = Win_buttons(50, 100, prist_img, 1000000)
 
-polic = Improvement('Полиция', 700, 10, polic_img, base_cost = 15, increase_per_purchase = 1.15, rps = 0.1)
+polic = Improvement('Полиция', 700, 10, polic_img, base_cost = 15, increase_per_purchase = 1.15, rps = 10000000)
 rosgv = Improvement('Гвардия', 700, 10 + store_y, rosgv_img, base_cost = 100, increase_per_purchase = 1.15, rps = 1)
 novichek = Improvement('Новичок', 700, 10 + store_y * 2, novichek_img, base_cost = 1100, increase_per_purchase = 1.15, rps = 8)
 dvorec = Improvement('Дворец', 700, 10 + store_y * 3, dvorec_img, base_cost = dollar_now * 160, increase_per_purchase = 1.15, rps = 47)
 
 list_of_improvement = [polic, rosgv, novichek, dvorec]
-
-list_of_fbuttons = [pygame.K_DELETE, pygame.K_PRINTSCREEN, pygame.K_F1, pygame.K_F2, pygame.K_F3, pygame.K_F4, 
-                    pygame.K_F5, pygame.K_F6, pygame.K_F7, pygame.K_F8, pygame.K_F9, pygame.K_F10, pygame.K_F11, 
-                    pygame.K_F12, pygame.K_HOME, pygame.K_HELP, pygame.K_END, pygame.K_PAGEDOWN, pygame.K_PAGEUP, 
-                    pygame.K_NUMLOCK, pygame.K_CAPSLOCK, pygame.K_LSHIFT, pygame.K_RSHIFT, pygame.K_LCTRL, 
-                    pygame.K_RCTRL, pygame.K_LALT, pygame.K_RALT, pygame.K_TAB]
-
-win = False
-def run():
-    menu = True
-    game = True
-    global win
-
-    menu_draw()
-    while menu:
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key not in list_of_fbuttons:
-                    menu = False
-                    if event.key == pygame.K_ESCAPE:
-                        game = False
-
-            if event.type == pygame.QUIT:
-                menu = False
-                game = False
-
-    while game:
-        for event in pygame.event.get():
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_pos = event.pos
-
-                for Improvement in list_of_improvement:
-                    if Improvement.collidepoint(mouse_pos) and user.score >= Improvement.getTotalCost():
-                        user.score -= Improvement.getTotalCost()
-                        Improvement.quantity += 1
-                        user.updateTotalrps()
-
-                if win_button.collidepoint(mouse_pos) and user.score >= win_button.getCost():
-                    game = False
-                    win = True
-        
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    game = False
-                elif event.key == pygame.K_SPACE:
-                    user.score += 1
-                    putin.animation_state = 1
-
-            if event.type == pygame.QUIT:
-                game = False
-
-        draw()
 
