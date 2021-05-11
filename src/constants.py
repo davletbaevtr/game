@@ -15,7 +15,7 @@ DARK_BLUE = (51, 90, 114)
 
 time_for_req = 0
 
-common_path = 'sprites/'
+common_path = 'resources/sprites/'
 background_img = pygame.image.load(common_path + '/background.png')
 putin_img = pygame.image.load(common_path + 'putin_img.png')
 polic_img = pygame.image.load(common_path + 'police.png')
