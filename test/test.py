@@ -1,5 +1,5 @@
 import unittest
-from src import clicker
+import clicker
 
 def to_start_position():
     clicker.dollar_now = clicker.dollar.curr_price()
@@ -11,7 +11,6 @@ def to_start_position():
 
 class ClickerTest(unittest.TestCase):
     def test_auto_clicks(self):
-        clicker.pygame.display.set_caption('Testing, wait.')
         clicker.user.updateTotalrps()
         self.assertEqual(clicker.user.score, 0)
         for clicker.improvement in clicker.list_of_improvement:
@@ -23,7 +22,6 @@ class ClickerTest(unittest.TestCase):
                     to_start_position()
 
     def test_check_cost(self):
-        clicker.pygame.display.set_caption('Testing, wait.')
         for clicker.improvement in clicker.list_of_improvement:
             for i in range(100):
                 if clicker.improvement != clicker.dvorec:
