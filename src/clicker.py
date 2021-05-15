@@ -1,4 +1,3 @@
-import time
 import dollar
 from constants import *
 
