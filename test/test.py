@@ -2,7 +2,7 @@ import unittest
 from src import clicker
 
 def to_start_position():
-    clicker.time_for_req = 0 
+    clicker.time_for_req = 0
     for clicker.improvement in clicker.list_of_improvement:
         clicker.improvement.quantity = 0
     clicker.user.score = 0
