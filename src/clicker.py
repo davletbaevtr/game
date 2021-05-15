@@ -278,7 +278,7 @@ score_board = ScoreBoard(100, 0)
 user = Player()
 win_button = Win_buttons(50, 100, prist_img, 1000000)
 
-polic = Improvement('Полиция', 700, 10, polic_img, base_cost = 15, increase_per_purchase = 1.15, rps = 10000000)
+polic = Improvement('Полиция', 700, 10, polic_img, base_cost = 15, increase_per_purchase = 1.15, rps = 0.1)
 rosgv = Improvement('Гвардия', 700, 10 + store_y, rosgv_img, base_cost = 100, increase_per_purchase = 1.15, rps = 1)
 novichek = Improvement('Новичок', 700, 10 + store_y * 2, novichek_img, base_cost = 1100, increase_per_purchase = 1.15, rps = 8)
 dvorec = Improvement('Дворец', 700, 10 + store_y * 3, dvorec_img, base_cost = dollar_now * 160, increase_per_purchase = 1.15, rps = 47)
