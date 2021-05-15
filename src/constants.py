@@ -27,8 +27,8 @@ menu_img = pygame.image.load(common_path + 'menu.png')
 end_img = pygame.image.load(common_path + 'end.png')
 win_img = pygame.image.load(common_path + 'win.png')
 
-list_of_fbuttons = [pygame.K_DELETE, pygame.K_PRINTSCREEN, pygame.K_F1, pygame.K_F2, pygame.K_F3, pygame.K_F4, 
-                    pygame.K_F5, pygame.K_F6, pygame.K_F7, pygame.K_F8, pygame.K_F9, pygame.K_F10, pygame.K_F11, 
-                    pygame.K_F12, pygame.K_HOME, pygame.K_HELP, pygame.K_END, pygame.K_PAGEDOWN, pygame.K_PAGEUP, 
-                    pygame.K_NUMLOCK, pygame.K_CAPSLOCK, pygame.K_LSHIFT, pygame.K_RSHIFT, pygame.K_LCTRL, 
+list_of_fbuttons = [pygame.K_DELETE, pygame.K_PRINTSCREEN, pygame.K_F1, pygame.K_F2, pygame.K_F3, pygame.K_F4,
+                    pygame.K_F5, pygame.K_F6, pygame.K_F7, pygame.K_F8, pygame.K_F9, pygame.K_F10, pygame.K_F11,
+                    pygame.K_F12, pygame.K_HOME, pygame.K_HELP, pygame.K_END, pygame.K_PAGEDOWN, pygame.K_PAGEUP,
+                    pygame.K_NUMLOCK, pygame.K_CAPSLOCK, pygame.K_LSHIFT, pygame.K_RSHIFT, pygame.K_LCTRL,
                     pygame.K_RCTRL, pygame.K_LALT, pygame.K_RALT, pygame.K_TAB]
