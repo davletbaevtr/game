@@ -8,4 +8,4 @@ The dollar exchange rate is updated every five minutes based on google search
 
 Libraries: pygame, requests, bs4.
 
-The game was written in a week, so sometimes the Bad and the Ugly code here
+The game was written in only one week. That's why it can be dowdy in some cases.
